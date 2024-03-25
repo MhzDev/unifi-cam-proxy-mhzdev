@@ -10,3 +10,6 @@ MANIFEST.in
 .pyre/
 .vscode/settings.json
 .vscode/launch.json
+.idea/vcs.xml
+.idea/unifi-cam-proxy-mhzdev.iml
+.idea/modules.xml

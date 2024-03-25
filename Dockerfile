@@ -20,20 +20,22 @@ RUN apk add --update \
 
 RUN pip install -U pip wheel setuptools maturin
 COPY requirements.txt .
-RUN pip wheel --no-deps -w /wheels -r requirements.txt
+RUN pip install -r requirements.txt --no-build-isolation
+
 
 FROM python:${tag}
 WORKDIR /app
 
 ARG version
 
-COPY --from=builder /usr/local/lib/python${version}/site-packages /usr/local/lib/python${version}/site-packages
+COPY --from=builder \
+        /usr/local/lib/python${version}/site-packages \
+        /usr/local/lib/python${version}/site-packages
 
-RUN apk add --update ffmpeg netcat-openbsd libusb-dev && apk add --no-cache rust cargo
+RUN apk add --update ffmpeg netcat-openbsd libusb-dev
 
 COPY . .
-COPY --from=builder /wheels /wheels
-RUN pip install --no-cache-dir /wheels/*.whl
+RUN pip install . --no-cache-dir
 
 COPY ./docker/entrypoint.sh /
 
