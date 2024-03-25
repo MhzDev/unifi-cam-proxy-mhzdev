@@ -7,6 +7,7 @@ from pathlib import Path
 import aiohttp
 import reolinkapi
 from yarl import URL
+from typing import Any, Optional
 
 from unifi.cams.base import UnifiCamBase, SmartDetectObjectType
 
@@ -146,3 +147,14 @@ class Reolink(UnifiCamBase):
             f"rtsp://{self.args.username}:{self.args.password}@{self.args.ip}:554"
             f"//h264Preview_{int(self.args.channel) + 1:02}_{stream}"
         )
+
+    async def get_feature_flags(self) -> dict[str, Any]:
+        return {
+            **await super().get_feature_flags(),
+                **{
+                    "mic": True,
+                    "smartDetect": [
+                        "person",
+                    ],
+                },
+            }
