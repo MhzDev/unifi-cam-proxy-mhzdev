@@ -18,11 +18,9 @@ RUN apk add --update \
         rust \
         zlib-dev
 
-RUN pip install --upgrade pip
-RUN pip install -U pip rustc wheel setuptools maturin
+RUN pip install -U pip wheel setuptools maturin
 COPY requirements.txt .
-RUN pip install -r requirements.txt --no-build-isolation
-
+RUN pip wheel --no-deps -w /wheels -r requirements.txt
 
 FROM python:${tag}
 WORKDIR /app
@@ -36,7 +34,7 @@ COPY --from=builder \
 RUN apk add --update ffmpeg netcat-openbsd libusb-dev
 
 COPY . .
-RUN pip install . --no-cache-dir
+RUN pip install --no-cache-dir /wheels/*
 
 COPY ./docker/entrypoint.sh /
 
