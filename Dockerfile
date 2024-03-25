@@ -18,6 +18,7 @@ RUN apk add --update \
         rust \
         zlib-dev
 
+RUN pip install --upgrade pip
 RUN pip install -U pip rustc wheel setuptools maturin
 COPY requirements.txt .
 RUN pip install -r requirements.txt --no-build-isolation
