@@ -27,11 +27,9 @@ WORKDIR /app
 
 ARG version
 
-COPY --from=builder \
-        /usr/local/lib/python${version}/site-packages \
-        /usr/local/lib/python${version}/site-packages
+COPY --from=builder /usr/local/lib/python${version}/site-packages /usr/local/lib/python${version}/site-packages
 
-RUN apk add --update ffmpeg netcat-openbsd libusb-dev
+RUN apk add --update ffmpeg netcat-openbsd libusb-dev && apk add --no-cache rust cargo
 
 COPY . .
 COPY --from=builder /wheels /wheels
