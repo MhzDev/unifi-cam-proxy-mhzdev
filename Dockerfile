@@ -34,6 +34,7 @@ COPY --from=builder \
 RUN apk add --update ffmpeg netcat-openbsd libusb-dev
 
 COPY . .
+COPY --from=builder /wheels /wheels
 RUN pip install --no-cache-dir /wheels/*.whl
 
 COPY ./docker/entrypoint.sh /
